@@ -1,6 +1,8 @@
-from django.views.generic import DetailView, ListView, CreateView, UpdateView
-
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
+from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
+
 from .forms import TweetModelForm
 from .mixins import FormUserNeededMixin, UserOwnerMixin
 from .models import Tweet
@@ -10,7 +12,7 @@ class TweetCreateView(LoginRequiredMixin, FormUserNeededMixin, CreateView):
     # queryset = Tweet.objects.all()
     form_class = TweetModelForm
     template_name = 'tweets/create_view.html'
-    success_url = '/tweet/create'
+    # success_url = '/tweet/create'
     login_url = '/admin/'
     # fields = ['user', 'content']
 
@@ -18,15 +20,22 @@ class TweetCreateView(LoginRequiredMixin, FormUserNeededMixin, CreateView):
 class TweetDetailView(DetailView):
     queryset = Tweet.objects.all()
 
-    def get_object(self, queryset=None):
-        return Tweet.objects.get(id=1)
+    # def get_object(self):
+    #     pk = self.kwargs.get("pk")
+    #     obj = get_object_or_404(Tweet, pk=pk)
+    #     return obj
+
+
+class TweetDeleteView(LoginRequiredMixin, DeleteView):
+    model = Tweet
+    success_url = reverse_lazy("tweet:list")
 
 
 class TweetUpdateView(LoginRequiredMixin, UserOwnerMixin, UpdateView):
     queryset = Tweet.objects.all()
     form_class = TweetModelForm
     template_name = 'tweets/update_view.html'
-    success_url = "/tweet/"
+    # success_url = "/tweet/"
 
 
 class TweetListView(ListView):
