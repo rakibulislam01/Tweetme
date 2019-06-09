@@ -4,6 +4,8 @@ from .models import Tweet
 
 
 class TweetModelAdmin(admin.ModelAdmin):
+    list_display = ('id', 'content')
+
     # form = TweetModelForm
     class Meta:
         model = Tweet

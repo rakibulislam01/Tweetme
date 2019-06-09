@@ -1,8 +1,8 @@
-from django.views.generic import DetailView, ListView, CreateView
+from django.views.generic import DetailView, ListView, CreateView, UpdateView
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import TweetModelForm
-from .mixins import FormUserNeededMixin
+from .mixins import FormUserNeededMixin, UserOwnerMixin
 from .models import Tweet
 
 
@@ -20,6 +20,13 @@ class TweetDetailView(DetailView):
 
     def get_object(self, queryset=None):
         return Tweet.objects.get(id=1)
+
+
+class TweetUpdateView(LoginRequiredMixin, UserOwnerMixin, UpdateView):
+    queryset = Tweet.objects.all()
+    form_class = TweetModelForm
+    template_name = 'tweets/update_view.html'
+    success_url = "/tweet/"
 
 
 class TweetListView(ListView):
