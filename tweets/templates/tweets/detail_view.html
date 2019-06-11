@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    {{objects}}
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+    	{{object.content}} <br>
+    	{{objects.user}} <br>
+    	{{object.timestamp | timesince }}
+    </div>
+
+{% endblock content%}
