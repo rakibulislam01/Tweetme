@@ -1,6 +1,38 @@
 {% extends "base.html" %}
+<style type="text/css">
+    #tweet-container{
+
+    }
+</style>
+
+{% block script %}
+    <script>
+        $(document).ready(function(){
+            $.ajax({
+                url: '/api/tweet/',
+                method: 'GET',
+                success: function(data){
+                    console.log(data);
+                    $.each(data, function(key, value){
+                        var tweetKey = key;
+                        var tweetContent = value.content;
+                        var tweetUser = value.user;
+                        $("#tweet-container").append(
+                            "<div class=\"media\"><div class=\"media-body\">"+ tweetContent + "<br/> via "+ tweetUser.username + " | " + "<a href='#'>View</a> " + "</div></div><hr/>"
+                        )
+                    })
+                },
+                error: function(data){
+                    console.log("error");
+                }
+            })
+        });
+    </script>
+
+{% endblock script%}
 
 {% block content %}
+    
 
     <div class="row">
         <div class="col-sm-3 col-xs-12" style="background-color: red;">
@@ -11,22 +43,15 @@
                 <div class="">
                     {% include "tweets/form.html" with form=create_form action_url=create_url btn_title="Tweet" %}
                 </div>
+                <hr/>
             {% endif %}
-            <hr>
+            <div id="tweet-container">
+        
+            </div>
+            
             {% for object in object_list %}
-                <div class="media">
-                    {% if object.image %}
-                        <img class="mr-3" src="..." alt="Generic placeholder image">
-                    {% endif %}
-                    <div class="media-body">
-                        <h5 class="mt-0">Media heading</h5>
-                        {{ object.content }}<br/>
-
-                        {{ object.user }}<br>
-                        {{ object.timestamp | timesince }} ago | <a href="{{ object.get_absolute_url }}">View</a>
-                    </div>
-                </div>
-                <hr>
+                
+                <hr/>
             {% empty %}
                 {% if request.GET.q %}
                     <p>No tweets found.</p>
