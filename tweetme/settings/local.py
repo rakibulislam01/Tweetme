@@ -37,7 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # apps
     'tweets.apps.TweetsConfig',
-    'crispy_forms'
+    'accounts.apps.AccountsConfig',
+
+    'crispy_forms',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
