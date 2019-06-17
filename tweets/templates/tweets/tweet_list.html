@@ -40,19 +40,42 @@
                 }
             }
 
-            $.ajax({
-                url: '/api/tweet/',
-                data: {
-                    "q": query
-                },
-                method: 'GET',
-                success: function(data){
-                    tweetList = data;
-                    parseTweets()
-                },
-                error: function(data){
-                    console.log("error");
-                }
+            function fatchTweets(){
+                $.ajax({
+                    url: '/api/tweet/list/',
+                    data: {
+                        "q": query
+                    },
+                    method: 'GET',
+                    success: function(data){
+                        tweetList = data;
+                        parseTweets()
+                    },
+                    error: function(data){
+                        console.log("error");
+                    }
+                })
+            }
+
+            fatchTweets()
+
+            $("#tweet-form").submit(function(event){
+                event.preventDefault()
+
+                var this_ = $(this)
+                var formData = this_.serialize()
+                $.ajax({
+                    url: '/api/tweet/create',
+                    data: formData,
+                    method: 'POST',
+                    success: function(data){
+                        console.log(data)
+                        fatchTweets()
+                    },
+                    error: function(data){
+                        console.log("error");
+                    }
+                })
             })
         });
     </script>
@@ -69,7 +92,7 @@
         <div class="col-sm-9">
             {% if not request.GET.q %}
                 <div class="">
-                    {% include "tweets/form.html" with form=create_form action_url=create_url btn_title="Tweet" %}
+                    {% include "tweets/form.html" with form=create_form action_url=create_url btn_title="Tweet" form_id="tweet-form" %}
                 </div>
                 <hr/>
             {% endif %}
