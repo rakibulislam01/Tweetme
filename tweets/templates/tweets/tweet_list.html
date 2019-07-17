@@ -22,6 +22,7 @@
 
             var query = getParameterByName('q');
             var tweetList = [];
+            var nextTweetUrl;
 
             function attachTweet(tweetValue, prepend){
                     var tweetContent = tweetValue.content;
@@ -48,15 +49,27 @@
                 }
             }
 
-            function fatchTweets(){
+            function fatchTweets(url){
+
+                var fecthUrl;
+                if (!url){
+                    fecthUrl = '/api/tweet/list/'
+                }else{
+                    fecthUrl = url
+                }
                 $.ajax({
-                    url: '/api/tweet/list/',
+                    url: fecthUrl,
                     data: {
                         "q": query
                     },
                     method: 'GET',
                     success: function(data){
-                        tweetList = data;
+                        tweetList = data.results;
+                        if (data.next){
+                            nextTweetUrl = data.next;
+                        }else{
+                            $("#loadmore").css("display", "none")
+                        }
                         parseTweets()
                     },
                     error: function(data){
@@ -66,6 +79,13 @@
             }
 
             fatchTweets()
+
+            $("#loadmore").click(function(event){
+                event.preventDefault()
+                if (nextTweetUrl){
+                    fatchTweets(nextTweetUrl)
+                }
+            })
 
             var charsStart = 140;
             var charsCurrent = 0;
@@ -135,7 +155,7 @@
             <div id="tweet-container">
         
             </div>
-        
+            <a href="#" id="loadmore">Load more Tweets</a>
         </div>
     </div>
 
