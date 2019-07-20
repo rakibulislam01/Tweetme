@@ -25,8 +25,8 @@ urlpatterns = [
     # path('', home, name='home'),
     path('', TweetListView.as_view(), name='home'),
     path('tweet/', include('tweets.urls', namespace='tweet')),
-    path('profiles/', include('accounts.urls', namespace='profiles')),
     path('api/tweet/', include('tweets.api.urls', namespace='tweet-api')),
+    path('', include('accounts.urls', namespace='profiles')),
 ]
 
 if settings.DEBUG:
