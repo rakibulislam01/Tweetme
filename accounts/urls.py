@@ -9,5 +9,5 @@ from .views import (
 app_name = 'profiles'
 urlpatterns = [
     path('<username>/', UserDetailView.as_view(), name='detail'),
-    path('<username>/follow', UserDetailView.as_view(), name='follow'),
+    path('<username>/follow', UserFollowView.as_view(), name='follow'),
 ]
