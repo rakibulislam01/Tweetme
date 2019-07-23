@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     # apps
     'tweets.apps.TweetsConfig',
     'accounts.apps.AccountsConfig',
+    'hashtags.apps.HashtagsConfig',
 
     'crispy_forms',
     'rest_framework'
