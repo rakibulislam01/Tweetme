@@ -24,6 +24,14 @@
             var tweetList = [];
             var nextTweetUrl;
 
+            function updateHashLinks(){
+                $(".media-body").each(function(data){
+                    var hashtagRegex = /(^|\s)#([\w\d-]+)/g
+                    var newText = $(this).html().replace(hashtagRegex, "$1<a href='/tags/$2/'>#$2</a>")
+                    $(this).html(newText)
+                })
+            }
+
             function attachTweet(tweetValue, prepend){
                     var tweetContent = tweetValue.content;
                     var tweetUser = tweetValue.user;
@@ -50,7 +58,6 @@
             }
 
             function fatchTweets(url){
-
                 var fecthUrl;
                 if (!url){
                     fecthUrl = '/api/tweet/list/'
@@ -71,6 +78,7 @@
                             $("#loadmore").css("display", "none")
                         }
                         parseTweets()
+                        updateHashLinks()
                     },
                     error: function(data){
                         console.log("error");
@@ -123,6 +131,7 @@
                             // fatchTweets()
                             this_.find("input[type=text], textarea").val("")
                             attachTweet(data, true)
+                            updateHashLinks()
 
                         },
                         error: function(data){
@@ -139,7 +148,6 @@
 {% endblock script%}
 
 {% block content %}
-    
 
     <div class="row">
         <div class="col-sm-3 col-xs-12" style="background-color: ;">
@@ -158,6 +166,5 @@
             <a href="#" id="loadmore">Load more Tweets</a>
         </div>
     </div>
-
 
 {% endblock content%}
